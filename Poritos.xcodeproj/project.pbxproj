@@ -11,8 +11,12 @@
 		BF32602F2AB9206F00A1FEF9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF32602E2AB9206F00A1FEF9 /* ContentView.swift */; };
 		BF3260312AB9207000A1FEF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF3260302AB9207000A1FEF9 /* Assets.xcassets */; };
 		BF3260342AB9207000A1FEF9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF3260332AB9207000A1FEF9 /* Preview Assets.xcassets */; };
-		BFE39CA82AB94B3D0054B923 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFE39CA72AB94B3D0054B923 /* LaunchScreen.storyboard */; };
+		BF6B536D2ABE5C5D000D1E35 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF6B536C2ABE5C5D000D1E35 /* LaunchScreen.storyboard */; };
+		BF796D572ABF61BF0014C31E /* ContentHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF796D562ABF61BF0014C31E /* ContentHome.swift */; };
+		BF9451322ABD1EB700481DAD /* passwordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9451312ABD1EB700481DAD /* passwordView.swift */; };
 		BFEE1F8C2ABB6FD7009D233A /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEE1F8B2ABB6FD7009D233A /* SignUpView.swift */; };
+		BFEE1F932ABB934C009D233A /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEE1F922ABB934C009D233A /* Networking.swift */; };
+		BFF8DFFC2ABF316F00508776 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8DFFB2ABF316F00508776 /* LoginView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,8 +25,12 @@
 		BF32602E2AB9206F00A1FEF9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BF3260302AB9207000A1FEF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF3260332AB9207000A1FEF9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		BFE39CA72AB94B3D0054B923 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BF6B536C2ABE5C5D000D1E35 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BF796D562ABF61BF0014C31E /* ContentHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentHome.swift; sourceTree = "<group>"; };
+		BF9451312ABD1EB700481DAD /* passwordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = passwordView.swift; sourceTree = "<group>"; };
 		BFEE1F8B2ABB6FD7009D233A /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		BFEE1F922ABB934C009D233A /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		BFF8DFFB2ABF316F00508776 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,10 +63,14 @@
 		BF32602B2AB9206E00A1FEF9 /* Poritos */ = {
 			isa = PBXGroup;
 			children = (
+				BF9451312ABD1EB700481DAD /* passwordView.swift */,
+				BFEE1F922ABB934C009D233A /* Networking.swift */,
 				BF32602C2AB9206F00A1FEF9 /* PoritosApp.swift */,
+				BF6B536C2ABE5C5D000D1E35 /* LaunchScreen.storyboard */,
 				BF32602E2AB9206F00A1FEF9 /* ContentView.swift */,
+				BFF8DFFB2ABF316F00508776 /* LoginView.swift */,
 				BFEE1F8B2ABB6FD7009D233A /* SignUpView.swift */,
-				BFE39CA72AB94B3D0054B923 /* LaunchScreen.storyboard */,
+				BF796D562ABF61BF0014C31E /* ContentHome.swift */,
 				BF3260302AB9207000A1FEF9 /* Assets.xcassets */,
 				BF3260322AB9207000A1FEF9 /* Preview Content */,
 			);
@@ -101,7 +113,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					BF3260282AB9206E00A1FEF9 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -131,7 +143,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BFE39CA82AB94B3D0054B923 /* LaunchScreen.storyboard in Resources */,
+				BF6B536D2ABE5C5D000D1E35 /* LaunchScreen.storyboard in Resources */,
 				BF3260342AB9207000A1FEF9 /* Preview Assets.xcassets in Resources */,
 				BF3260312AB9207000A1FEF9 /* Assets.xcassets in Resources */,
 			);
@@ -144,9 +156,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF9451322ABD1EB700481DAD /* passwordView.swift in Sources */,
+				BFF8DFFC2ABF316F00508776 /* LoginView.swift in Sources */,
 				BF32602F2AB9206F00A1FEF9 /* ContentView.swift in Sources */,
 				BFEE1F8C2ABB6FD7009D233A /* SignUpView.swift in Sources */,
 				BF32602D2AB9206F00A1FEF9 /* PoritosApp.swift in Sources */,
+				BFEE1F932ABB934C009D233A /* Networking.swift in Sources */,
+				BF796D572ABF61BF0014C31E /* ContentHome.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,6 +205,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -249,6 +266,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
