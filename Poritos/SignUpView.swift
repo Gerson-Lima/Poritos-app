@@ -23,24 +23,31 @@ struct SignUpView: View {
             ZStack{
                 Color("BGColor").ignoresSafeArea()
                 
-                //definir estilização que se repete de forma global
-                ScrollView{
-                    VStack{
-                        ZStack{
-                            Button(action:{
-                                presentation.wrappedValue.dismiss()
-                            }, label: {
-                                Label("Back", systemImage: "chevron.left")
-                            }).padding(.trailing, 267)
-                                .padding(.top, 20)
-                            Text("Cadastro")
-                                .foregroundColor(.black)
-                                .font(.system(size: 22))
-                                .fontWeight(.semibold)
-                                .padding(.top, 20)
-                        }
+                VStack{
+                    ZStack{
+                        Rectangle().frame(width: 40, height: 5)
+                            .foregroundColor(.gray)
+                            .cornerRadius(3.0)
+                            .padding(.bottom, 40)
+                            .opacity(0.5)
                         
-                        Spacer().frame(height: 60)
+                        Button(action:{
+                            presentation.wrappedValue.dismiss()
+                        }, label: {
+                            Label("Back", systemImage: "chevron.left")
+                        }).padding(.trailing, 285)
+                            .padding(.top, 40)
+                        Text("Cadastro")
+                            .foregroundColor(.black)
+                            .font(.system(size: 22))
+                            .fontWeight(.semibold)
+                            .padding(.top, 40)
+
+                    }
+                    
+                    ScrollView(showsIndicators: false){
+                        
+                        Spacer().frame(height: 12)
                         
                         TextField("", text: $name, prompt: Text("Nome").foregroundColor(Color(red: 0.8, green: 0.8, blue: 0.8, opacity: 0.8)))
                             .foregroundColor(Color.black)
@@ -157,6 +164,7 @@ struct SignUpView: View {
             }.onTapGesture {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
+            .navigationBarBackButtonHidden(true)
         }
     }
 }
