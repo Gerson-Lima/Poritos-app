@@ -75,8 +75,6 @@ struct LoginView: View {
                                     .cornerRadius(10)
                                     .frame(maxHeight: 60)
                             }
-//                            .navigationBarTitle("Entrar", displayMode: .inline)
-//                            .navigationBarHidden(true)
                             
                             Spacer().frame(height: 20)
                             
