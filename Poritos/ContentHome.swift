@@ -78,12 +78,13 @@ struct ContentHome: View {
             NavigationView {
                 NavigationStack {
                     ZStack{
-                        Color("BGColor").ignoresSafeArea()
+                        Color("BGColor")
+                            .edgesIgnoringSafeArea(.all)
                         
                         ScrollView(.vertical, showsIndicators: false) {
                             VStack {
                                 
-                                Spacer().frame(width: 0, height: 12)
+                                Spacer().frame(width: 0, height: 22)
                                 
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
@@ -104,7 +105,7 @@ struct ContentHome: View {
                                     }
                                 }
                                 
-                                Spacer().frame(width: 20, height: 22)
+                                Spacer().frame(width: 20, height: 24)
                                 
                                 if searchText.isEmpty {
                                     Image(images[AdCarousel])
@@ -125,7 +126,7 @@ struct ContentHome: View {
                                                     }
                                                 }
                                             }
-                                        )
+                                        ).shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 2)
                                     
                                     HStack {
                                         ForEach(images.indices, id: \.self) {index in
@@ -218,19 +219,19 @@ struct ContentHome: View {
                                             .font(.system(size: 17))
                                             .foregroundColor(Color("PrimaryColor"))
                                     }.padding(.horizontal)
-                                        
                                 }
                             }
                         }
                     }
                     
                     Spacer().frame(height: 0)
-                    
                         .navigationBarTitle("Início")
                         .navigationBarItems(
                             trailing: Button(action: {}) {
                                 Image(systemName: "bell.badge").foregroundColor(Color("PrimaryColor"))})
-                        .edgesIgnoringSafeArea(.all)
+                        .edgesIgnoringSafeArea(.bottom)
+                        .background(ignoresSafeAreaEdges: .all)
+                    
                 }
                 
                 .onTapGesture {
@@ -250,40 +251,105 @@ struct ContentHome: View {
                 }
             }
             
-            .padding(.bottom, 0)
+            
             .tabItem {
                 Image(systemName: "house.fill")
                 Text("Início")
             }
             NavigationView {
-                Text("Serviços")
-                    .navigationBarTitle("Serviços")
+                NavigationStack {
+                    ZStack {
+                        Color("BGColor")
+                            .ignoresSafeArea()
+                        ScrollView(.vertical, showsIndicators: false) {
+                            VStack {
+                                Image("BannerServices")
+                                    .resizable()
+                                    .frame(width: 382, height: 344)
+                                    .padding(.top, 22)
+                                
+                                Spacer().frame(height: 30)
+                                
+                                HStack {
+                                    Text("Selecione um pet para ser atendido")
+                                        .font(.system(size: 20))
+                                        .fontWeight(.medium)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .padding(.leading, 16)
+                                    
+                                    Button(action: {}) {
+                                        Text("Editar")
+                                            .font(.system(size: 17))
+                                            .fontWeight(.regular)
+                                            .padding(.trailing, 16)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Spacer().frame(height: 0)
+                        .navigationBarTitle("Serviços")
+                        .edgesIgnoringSafeArea(.bottom)
+                        .background(ignoresSafeAreaEdges: .all)
+                }
             }
             .tabItem {
                 Image(systemName: "square.grid.2x2.fill")
                 Text("Serviços")
             }
+            
+            
+            
             NavigationView {
-                Text("Carrinho")
-                    .navigationBarTitle("Carrinho")
+                NavigationStack {
+                    ZStack {
+                        Color("BGColor")
+                            .ignoresSafeArea()
+                        ScrollView(.vertical, showsIndicators: false) {
+                            VStack {
+                                Text("Carrinho") //CONTEUDO DO CARRINHO AQUI
+                            }
+                        }
+                            
+                    }
+                    Spacer().frame(height: 0)
+                        .navigationBarTitle("Carrinho")
+                        .edgesIgnoringSafeArea(.bottom)
+                        .background(ignoresSafeAreaEdges: .all)
+                }
             }
+            
             .tabItem {
                 Image(systemName: "cart.fill")
                 Text("Carrinho")
             }
             NavigationView {
-                Text("Perfil")
-                    .navigationBarTitle("Perfil")
+                NavigationStack {
+                    ZStack {
+                        Color("BGColor")
+                            .ignoresSafeArea()
+                        ScrollView(.vertical, showsIndicators: false) {
+                            VStack {
+                                Text("Perfil") //CONTEUDO DO PERFIL AQUI
+                            }
+                        }
+                            
+                    }
+                    Spacer().frame(height: 0)
+                        .navigationBarTitle("Perfil")
+                        .edgesIgnoringSafeArea(.bottom)
+                        .background(ignoresSafeAreaEdges: .all)
+                }
             }
             .tabItem {
                 Image(systemName: "person.fill")
                 Text("Perfil")
             }
         }
+        
         .navigationBarBackButtonHidden(true)
         .accentColor(Color("PrimaryColor"))
     }
-    
     
     struct CardView: View {
         let product: Product
