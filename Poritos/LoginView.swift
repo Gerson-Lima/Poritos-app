@@ -9,11 +9,13 @@ import SwiftUI
 
 struct LoginView: View {
     
-    
     @State var SignUpScreen = false
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var destinationLabelB = "Entrar"
+    @State public var token: String? = nil
+    @State private var errorMessage: String? = nil
+    @State private var redirectToHome = false
+    @State private var showAlert: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -64,20 +66,26 @@ struct LoginView: View {
                             
                             Spacer().frame(height: 60)
                             
-                            NavigationLink(destination: ContentHome()) {
-                                Text(destinationLabelB)
-                                    .foregroundColor(Color(.white))
-                                    .font(Font.system(size: 26, weight: .semibold))
-                                    .foregroundColor(.white)
-                                    .padding(16)
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color("PrimaryColor"))
-                                    .cornerRadius(10)
-                                    .frame(maxHeight: 60)
+                            Button(action: {logar(email: email, password: password)}) {
+                                Text("Entrar")
                             }
+                            .foregroundColor(Color(.white))
+                            .font(Font.system(size: 26, weight: .semibold))
+                            .foregroundColor(.white)
+                            .padding(16)
+                            .frame(maxWidth: .infinity)
+                            .background(Color("PrimaryColor"))
+                            .cornerRadius(10)
                             
-                            Spacer().frame(height: 20)
+                            Spacer().frame(height: 16)
                             
+                                .alert(isPresented: $showAlert) {
+                                    Alert(
+                                        title: Text("Credenciais inválidas."),
+                                        message: Text("Email ou senha incorretos"),
+                                        dismissButton: .default(Text("OK"))
+                                    )
+                                }
                                 .sheet(isPresented: $SignUpScreen) {
                                     SignUpView()
                                 }
@@ -95,18 +103,88 @@ struct LoginView: View {
                                 
                             }.padding(20)
                         }.padding(30)
+                            
+                            .padding(.bottom, 30)
+                            .navigationDestination(
+                                isPresented: $redirectToHome) {
+                                    ContentHome()
+                                }
                     }
+                    
+                }.onTapGesture {
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 }
-            }.onTapGesture {
-                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
         }
     }
+    func logar(email: String, password: String) {
+        guard let url = URL(string: "http://127.0.0.1:8000/api/login/") else {
+            print("URL inválida")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let json: [String: Any] = [
+            "email": email,
+            "password": password
+        ]
+        
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
+            print("Erro ao serializar JSON")
+            return
+        }
+        
+        request.httpBody = jsonData
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print("Erro na requisição: (error?.localizedDescription ?? Erro desconhecido)")
+                return
+            }
+            
+            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                
+//                let jsonString = "\(json)"
+            }
+                
+            do {
+                let resposta = try JSONDecoder().decode(Resposta.self, from: data)
+                
+                if let token = resposta.token {
+                    self.token = token
+                    tokenManager.token = token
+                    print("\(tokenManager.token)")
+                    redirectToHome = true
+                    
+                } else if let erro = resposta.erro {
+                    self.errorMessage = erro
+                    
+                }
+                else{
+                    showAlert = true
+                }
+            } catch {
+                print("Erro ao decodificar resposta: \(error.localizedDescription)")
+            }
+        }.resume()
+    }
+    
 }
+
+
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()
         
     }
 }
+
+struct Resposta: Codable {
+    let token: String?
+    let erro: String?
+}
+
 

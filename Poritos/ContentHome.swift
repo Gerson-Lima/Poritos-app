@@ -21,19 +21,21 @@ struct Pet: Identifiable {
     let species: String
     let race: String
     let age: String
-    let mass: Float
+    let mass: String
     let sex: Sex
-    let imageName: String
     enum Sex {
-        case masculino
-        case feminino
+        case macho
+        case femea
     }
+    let imageName: String
+
 }
 
 struct ContentHome: View {
     
     @State private var AdCarousel = 0
     @State private var searchText = ""
+    @State private var addPet = false
     
     let images: [String] = ["1", "2", "3"]
     
@@ -47,9 +49,10 @@ struct ContentHome: View {
     ]
     
     let pets: [Pet] = [
-        Pet(name: "Saori", species: "Gato", race: "Vira-lata", age: "16 anos", mass: 14.6, sex: .feminino, imageName: "pet1"),
-        Pet(name: "Tom", species: "Gato", race: "Vira-lata", age: "7 anos", mass: 15.6, sex: .masculino, imageName: "pet2")
-       ]
+        Pet(name: "Tom", species: "Gato", race: "Siamês", age: "7 anos", mass: "15.6", sex: .macho, imageName: "pet1"),
+        Pet(name: "Saori", species: "Gato", race: "Munchkin", age: "2 anos", mass: "12.2", sex: .femea, imageName: "pet2")
+       
+    ]
     
     var filteredProducts: [Product] {
         if searchText.isEmpty {
@@ -199,7 +202,9 @@ struct ContentHome: View {
                                     
                                     
                                     VStack {
-                                        Button(action: {}) {
+                                        NavigationLink(destination: AddPetView()) {
+                                            Button(action: {addPet = true}) {
+                                            }
                                             Image(systemName: "plus")
                                                 .resizable()
                                                 .frame(width: 22, height: 22, alignment: .center)
@@ -211,8 +216,8 @@ struct ContentHome: View {
                                                     Circle()
                                                         .stroke(Color.white, lineWidth: 4)
                                                         .frame(width: 98, height: 98))
-                                                        .shadow(color: .black.opacity(0.1), radius: 10, x: 8, y: 8)
-                                                        
+                                                .shadow(color: .black.opacity(0.1), radius: 10, x: 8, y: 8)
+                                            
                                         }
                                         Text("Novo pet")
                                             .fontWeight(.medium)
@@ -261,14 +266,16 @@ struct ContentHome: View {
                     ZStack {
                         Color("BGColor")
                             .ignoresSafeArea()
+                        
                         ScrollView(.vertical, showsIndicators: false) {
+                            
                             VStack {
                                 Image("BannerServices")
                                     .resizable()
                                     .frame(width: 382, height: 344)
                                     .padding(.top, 22)
                                 
-                                Spacer().frame(height: 30)
+                                Spacer().frame(height: 44)
                                 
                                 HStack {
                                     Text("Selecione um pet para ser atendido")
@@ -285,8 +292,38 @@ struct ContentHome: View {
                                     }
                                 }
                             }
+                            
+                            LazyVStack {
+                                ForEach(pets) { pet in
+                                    PetServiceView(pet: pet)
+                                        .padding(.horizontal, 16)
+                                        .padding(.bottom, 16)
+                                }
+                            }
+                            
+                            Button(action: {}) {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Color.white)
+                                        .frame(width: .infinity, height: 158)
+                                        .cornerRadius(21)
+                                        .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 3)
+                                    
+                                    Image(systemName: "plus")
+                                        .resizable()
+                                        .frame(width: 32, height: 32, alignment: .center)
+                                        .foregroundColor(Color("PrimaryColor"))
+                                        .scaledToFit()
+                                        .frame(width: 100, height: 100)
+                                    
+                                } .padding(.horizontal, 16)
+                            }
+                            
+                            Spacer().frame(height: 22)
+                            
                         }
                     }
+                    
                     Spacer().frame(height: 0)
                         .navigationBarTitle("Serviços")
                         .edgesIgnoringSafeArea(.bottom)
@@ -310,7 +347,7 @@ struct ContentHome: View {
                                 Text("Carrinho") //CONTEUDO DO CARRINHO AQUI
                             }
                         }
-                            
+                        
                     }
                     Spacer().frame(height: 0)
                         .navigationBarTitle("Carrinho")
@@ -333,7 +370,7 @@ struct ContentHome: View {
                                 Text("Perfil") //CONTEUDO DO PERFIL AQUI
                             }
                         }
-                            
+                        
                     }
                     Spacer().frame(height: 0)
                         .navigationBarTitle("Perfil")
@@ -410,13 +447,13 @@ struct ContentHome: View {
 
 struct PetView: View {
     let pet: Pet
-
+    
     var body: some View {
         
         ZStack{
             VStack {
                 Spacer().frame(width: 0, height: 10)
-
+                
                 Image(pet.imageName)
                     .resizable()
                     .scaledToFit()
@@ -431,23 +468,112 @@ struct PetView: View {
                         Circle()
                             .stroke(Color.blue, lineWidth: 2)
                             .frame(width: 100, height: 100)
-                            
+                        
                     ).shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 3)
-
+                
                 Text(pet.name)
                     .foregroundColor(.black)
                     .fontWeight(.medium)
                     .font(.system(size: 17))
                     .padding(.top, 1)
                     .frame(maxWidth: 190, alignment: .center)
-
+                
                 Spacer().frame(width: 0, height: 10)
-//
-//                Text("\(pet.species) - \(pet.age)")
-//                    .foregroundColor(.gray)
-//                    .font(.system(size: 14))
-//                    .padding(.bottom, 1)
-//                    .frame(maxWidth: 190, alignment: .center)
+                
+            }
+        }
+    }
+}
+
+struct PetServiceView: View {
+    let pet: Pet
+    
+    var body: some View {
+        Button(action: {}) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 21)
+                    .fill(Color.white)
+                    .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 3)
+                    .frame(width: 382, height: 158)
+                
+                HStack {
+                    Image(pet.imageName)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 158, height: 158)
+                        .clipped()
+                        .cornerRadius(21)
+                    
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text(pet.name)
+                                .font(.system(size: 22))
+                                .foregroundColor(.black)
+                                .fontWeight(.semibold)
+                                .font(.system(size: 17))
+                                .padding(.leading, 6)
+                            
+                            Spacer()
+                            
+                            if pet.sex == .macho {
+                                Image("genderMale")
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .aspectRatio(contentMode: .fit)
+                                    .padding(.trailing, 8)
+                            } else {
+                                Image("genderFemale")
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .aspectRatio(contentMode: .fit)
+                                    .padding(.trailing, 8)
+                            }
+                        }
+                        
+                        Spacer().frame(height: 12)
+                        
+                        HStack {
+                            Text("Espécie\n")
+                                .foregroundColor(.gray)
+                            + Text("\(pet.species)")
+                                .foregroundColor(.black)
+                            
+                            Spacer().frame(width: 40)
+                            
+                            Text("Idade\n")
+                                .foregroundColor(.gray)
+                            + Text("\(pet.age)")
+                                .foregroundColor(.black)
+                            
+                        }.font(.system(size: 16))
+                            .padding(.leading, 8)
+                            .multilineTextAlignment(.leading)
+                        
+                        Spacer().frame(height: 10)
+                        
+                        HStack {
+                            Text("Peso\n")
+                                .foregroundColor(.gray)
+                            + Text(String(format: "%.1f kg", pet.mass))
+                                .foregroundColor(.black)
+                            
+                            Spacer().frame(width: 44)
+                            
+                            Text("Raça\n")
+                                .foregroundColor(.gray)
+                            + Text("\(pet.race)")
+                                .foregroundColor(.black)
+                                 
+                        }.font(.system(size: 16))
+                            .padding(.leading, 8)
+                            .multilineTextAlignment(.leading)
+                    }
+                    Spacer()
+                }
+//                Image(systemName: "chevron.right")
+//                    .padding(.leading, 320)
+//                    .padding(.top, 100)
+//                SETA LATERAL (DESNECESÁRIA?)
             }
         }
     }

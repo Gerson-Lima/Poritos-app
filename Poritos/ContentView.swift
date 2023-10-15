@@ -48,8 +48,6 @@ struct ContentView: View {
                                         .cornerRadius(10)
                                         .frame(width: 250, height: 60)
                                 }
-                                //                                                                .navigationBarTitle("Entrar", displayMode: .inline)
-                                //                                                                .navigationBarHidden(true)
                                 
                                 
                                 .sheet(isPresented: $SignUpScreen) {

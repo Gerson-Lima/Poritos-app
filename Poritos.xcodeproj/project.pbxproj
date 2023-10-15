@@ -12,8 +12,10 @@
 		BF3260312AB9207000A1FEF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF3260302AB9207000A1FEF9 /* Assets.xcassets */; };
 		BF3260342AB9207000A1FEF9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF3260332AB9207000A1FEF9 /* Preview Assets.xcassets */; };
 		BF6B536D2ABE5C5D000D1E35 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF6B536C2ABE5C5D000D1E35 /* LaunchScreen.storyboard */; };
+		BF745C6D2ADC0B1600F0F164 /* AddPetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF745C6C2ADC0B1600F0F164 /* AddPetView.swift */; };
 		BF796D572ABF61BF0014C31E /* ContentHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF796D562ABF61BF0014C31E /* ContentHome.swift */; };
 		BF9451322ABD1EB700481DAD /* passwordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9451312ABD1EB700481DAD /* passwordView.swift */; };
+		BFAE1F082ADC135000B70B4B /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAE1F072ADC135000B70B4B /* ImagePicker.swift */; };
 		BFEE1F8C2ABB6FD7009D233A /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEE1F8B2ABB6FD7009D233A /* SignUpView.swift */; };
 		BFEE1F932ABB934C009D233A /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEE1F922ABB934C009D233A /* Networking.swift */; };
 		BFF8DFFC2ABF316F00508776 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8DFFB2ABF316F00508776 /* LoginView.swift */; };
@@ -26,8 +28,10 @@
 		BF3260302AB9207000A1FEF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF3260332AB9207000A1FEF9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BF6B536C2ABE5C5D000D1E35 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BF745C6C2ADC0B1600F0F164 /* AddPetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetView.swift; sourceTree = "<group>"; };
 		BF796D562ABF61BF0014C31E /* ContentHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentHome.swift; sourceTree = "<group>"; };
 		BF9451312ABD1EB700481DAD /* passwordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = passwordView.swift; sourceTree = "<group>"; };
+		BFAE1F072ADC135000B70B4B /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		BFEE1F8B2ABB6FD7009D233A /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		BFEE1F922ABB934C009D233A /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		BFF8DFFB2ABF316F00508776 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -63,14 +67,16 @@
 		BF32602B2AB9206E00A1FEF9 /* Poritos */ = {
 			isa = PBXGroup;
 			children = (
+				BF32602C2AB9206F00A1FEF9 /* PoritosApp.swift */,
+				BFAE1F072ADC135000B70B4B /* ImagePicker.swift */,
 				BF9451312ABD1EB700481DAD /* passwordView.swift */,
 				BFEE1F922ABB934C009D233A /* Networking.swift */,
-				BF32602C2AB9206F00A1FEF9 /* PoritosApp.swift */,
 				BF6B536C2ABE5C5D000D1E35 /* LaunchScreen.storyboard */,
 				BF32602E2AB9206F00A1FEF9 /* ContentView.swift */,
 				BFF8DFFB2ABF316F00508776 /* LoginView.swift */,
 				BFEE1F8B2ABB6FD7009D233A /* SignUpView.swift */,
 				BF796D562ABF61BF0014C31E /* ContentHome.swift */,
+				BF745C6C2ADC0B1600F0F164 /* AddPetView.swift */,
 				BF3260302AB9207000A1FEF9 /* Assets.xcassets */,
 				BF3260322AB9207000A1FEF9 /* Preview Content */,
 			);
@@ -157,7 +163,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF9451322ABD1EB700481DAD /* passwordView.swift in Sources */,
+				BF745C6D2ADC0B1600F0F164 /* AddPetView.swift in Sources */,
 				BFF8DFFC2ABF316F00508776 /* LoginView.swift in Sources */,
+				BFAE1F082ADC135000B70B4B /* ImagePicker.swift in Sources */,
 				BF32602F2AB9206F00A1FEF9 /* ContentView.swift in Sources */,
 				BFEE1F8C2ABB6FD7009D233A /* SignUpView.swift in Sources */,
 				BF32602D2AB9206F00A1FEF9 /* PoritosApp.swift in Sources */,

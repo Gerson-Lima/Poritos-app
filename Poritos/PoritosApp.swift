@@ -12,7 +12,13 @@ struct PoritosApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(tokenManager)
                 .preferredColorScheme(.light)
         }
     }
 }
+
+class TokenManager: ObservableObject {
+    @Published var token: String = "53b76de6ca1e508efb191525ab64d4ac3fdbf93c"
+}
+let tokenManager = TokenManager()
