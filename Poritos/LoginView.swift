@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     
+    
     @State var SignUpScreen = false
     @State private var email: String = ""
     @State private var password: String = ""
@@ -34,6 +35,7 @@ struct LoginView: View {
                             
                             TextField("", text: $email, prompt: Text("E-mail").foregroundColor(Color(red: 0.8, green: 0.8, blue: 0.8, opacity: 0.8)))
                                 .foregroundColor(Color.black)
+                                .autocapitalization(.none)
                                 .font(Font.system(size: 16, weight: .regular))
                                 .padding(.bottom, 16)
                                 .padding(.top, 16)
@@ -103,12 +105,14 @@ struct LoginView: View {
                                 
                             }.padding(20)
                         }.padding(30)
-                            
+                        
                             .padding(.bottom, 30)
+                        
                             .navigationDestination(
                                 isPresented: $redirectToHome) {
                                     ContentHome()
                                 }
+                        
                     }
                     
                 }.onTapGesture {
@@ -117,6 +121,7 @@ struct LoginView: View {
             }
         }
     }
+    
     func logar(email: String, password: String) {
         guard let url = URL(string: "http://127.0.0.1:8000/api/login/") else {
             print("URL inválida")
@@ -145,11 +150,11 @@ struct LoginView: View {
                 return
             }
             
-//            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
-//                
-////                let jsonString = "\(json)"
-//            }
-                
+            //            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+            //
+            ////                let jsonString = "\(json)"
+            //            }
+            
             do {
                 let resposta = try JSONDecoder().decode(Resposta.self, from: data)
                 

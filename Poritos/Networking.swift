@@ -53,7 +53,8 @@ class Networking {
             completion(.failure(error))
         }
     }
-    static func enviarRequisicao(nome: String, especie: String, raca: String, idade: String, sexo: Pet.Sex, peso: String, showAlert: Binding<Bool>) {
+    
+    static func enviarRequisicao(nome: String, especie: String, raca: String, idade: String, sexo: Pet.Sex, peso: String, image: Image?, showAlert: Binding<Bool>) {
         
         guard let url = URL(string: "http://127.0.0.1:8000/api/animais/") else { return }
         

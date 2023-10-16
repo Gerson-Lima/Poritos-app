@@ -300,8 +300,10 @@ struct ContentHome: View {
                                         .padding(.bottom, 16)
                                 }
                             }
-                            
-                            Button(action: {}) {
+                          
+                                NavigationLink(destination: AddPetView()){
+                                    Button(action: {addPet = true}) {
+                                    }
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .fill(Color.white)
