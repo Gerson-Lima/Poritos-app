@@ -141,14 +141,14 @@ struct LoginView: View {
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
-                print("Erro na requisição: (error?.localizedDescription ?? Erro desconhecido)")
+                print("Erro na requisição: Erro ao conectar ao servidor")
                 return
             }
             
-            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
-                
-//                let jsonString = "\(json)"
-            }
+//            if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+//                
+////                let jsonString = "\(json)"
+//            }
                 
             do {
                 let resposta = try JSONDecoder().decode(Resposta.self, from: data)

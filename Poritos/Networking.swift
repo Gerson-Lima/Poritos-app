@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 class Networking {
+    @State private var showAlert: Bool = false
     
     static func signup(name: String, birth: Date, CPF: String, phone: String, email: String, password: String, passwordConfirm: String, completion: @escaping (Result<String, Error>) -> Void) {
         
@@ -52,47 +53,54 @@ class Networking {
             completion(.failure(error))
         }
     }
+    static func enviarRequisicao(nome: String, especie: String, raca: String, idade: String, sexo: Pet.Sex, peso: String, showAlert: Binding<Bool>) {
+        
+        guard let url = URL(string: "http://127.0.0.1:8000/api/animais/") else { return }
+        
+        var sex: String
+        if (sexo == .macho) {
+            sex = "macho"
+        } else {
+            sex = "femea"
+        }
+        
+        let json: [String: Any] = [
+            "nome": nome,
+            "especie": especie,
+            "raca": raca,
+            "idade": idade,
+            "sexo": sex,
+            "peso": peso
+        ]
+        print(json)
+        
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        request.setValue("Token \(tokenManager.token)", forHTTPHeaderField: "Authorization")
+        
+        request.httpBody = jsonData
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Erro: \(error.localizedDescription)")
+                return
+            }
+            
+            if let response = response as? HTTPURLResponse {
+                if response.statusCode == 201 {
+                    showAlert.wrappedValue = true
+                } else {
+                    print("Erro no servidor. Código de status:", response.statusCode)
+                }
+            }
+        }
+        task.resume()
+    }
 }
-    
-//static func addPet(name: String, species: String, race: String, age: String, mass: String, sex: Pet.Sex, imageName: Image, token: String) -> Void {
-//    guard let url = URL(string: "http://127.0.0.1:8000/api/animais/") else {
-//        print("URL inválida")
-//        return
-//    }
-//
-//    let body: [String: Any] = [
-//        "nome": name,
-//        "especie": species,
-//        "raca": race,
-//        "idade": age,
-//        "peso": mass,
-//        "sexo": sex,
-//        "foto": imageName
-//    ]
-//
-//    do {
-//        let jsonData = try JSONSerialization.data(withJSONObject: body)
-//
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "POST"
-//        request.httpBody = jsonData
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.setValue("Bearer (token)", forHTTPHeaderField: "Authorization")
-//
-//        URLSession.shared.dataTask(with: request) { data, response, error in
-//            if let error = error {
-//                print("Erro: (error.localizedDescription)")
-//                return
-//            }
-//
-//            if let data = data {
-//                if let json = try? JSONSerialization.jsonObject(with: data, options: []) {
-//                    print("(json)")
-//                }
-//            }
-//        }.resume()
-//
-//    } catch {
-//        print("Erro ao serializar JSON: (error)")
-//    }
-//}
+
