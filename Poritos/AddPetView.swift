@@ -11,9 +11,9 @@ struct AddPetView: View {
     
     
     @Environment(\.presentationMode) var presentationMode
-
-    @State private var image: Image?
+    
     @State private var isImagePickerPresented = false
+    @State private var image: Image?
     @State private var petName: String = ""
     @State private var petSpecies: String = ""
     @State private var petRace: String = ""

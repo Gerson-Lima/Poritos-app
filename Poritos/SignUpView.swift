@@ -9,6 +9,7 @@ import SwiftUI
 struct SignUpView: View {
     
     @Environment(\.presentationMode) var presentation
+    
     @State private var name: String = ""
     @State private var birth: Date = Date()
     @State private var CPF: String = ""

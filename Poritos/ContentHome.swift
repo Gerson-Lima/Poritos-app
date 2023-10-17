@@ -490,14 +490,18 @@ struct PetView: View {
 struct PetServiceView: View {
     let pet: Pet
     
+    @State var ServicesScreen = false
+    
     var body: some View {
-        Button(action: {}) {
+        Button(action: {ServicesScreen = true}) {
             ZStack {
                 RoundedRectangle(cornerRadius: 21)
                     .fill(Color.white)
                     .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 3)
                     .frame(width: 382, height: 158)
-                
+                    .sheet(isPresented: $ServicesScreen) {
+                        ServicesView(pet: ContentHome().pets[0])
+                    }
                 HStack {
                     Image(pet.imageName)
                         .resizable()
@@ -556,7 +560,7 @@ struct PetServiceView: View {
                         HStack {
                             Text("Peso\n")
                                 .foregroundColor(.gray)
-                            + Text(String(format: "%.1f kg", pet.mass))
+                            + Text(String(format: "\(pet.mass) kg"))
                                 .foregroundColor(.black)
                             
                             Spacer().frame(width: 44)

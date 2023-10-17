@@ -9,7 +9,6 @@ import SwiftUI
 
 struct LoginView: View {
     
-    
     @State var SignUpScreen = false
     @State private var email: String = ""
     @State private var password: String = ""
@@ -78,6 +77,10 @@ struct LoginView: View {
                             .frame(maxWidth: .infinity)
                             .background(Color("PrimaryColor"))
                             .cornerRadius(10)
+                            .navigationDestination(
+                                isPresented: $redirectToHome) {
+                                    ContentHome()
+                                }
                             
                             Spacer().frame(height: 16)
                             
@@ -107,11 +110,6 @@ struct LoginView: View {
                         }.padding(30)
                         
                             .padding(.bottom, 30)
-                        
-                            .navigationDestination(
-                                isPresented: $redirectToHome) {
-                                    ContentHome()
-                                }
                         
                     }
                     
@@ -161,8 +159,9 @@ struct LoginView: View {
                 if let token = resposta.token {
                     self.token = token
                     tokenManager.token = token
-                    print("\(tokenManager.token)")
                     redirectToHome = true
+                    print("\(tokenManager.token)")
+                    
                     
                 } else if let erro = resposta.erro {
                     self.errorMessage = erro
