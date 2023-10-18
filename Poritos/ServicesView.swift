@@ -12,6 +12,7 @@ struct ServicesView: View {
     
     @Environment(\.presentationMode) var presentation
     
+//    @Binding var pets: [Pet]
     @State var ServicesScreen = false
     
     var body: some View {
@@ -43,11 +44,10 @@ struct ServicesView: View {
                             
                             
                             ZStack {
-                                RoundedRectangle(cornerRadius: 21)
-                                    .fill(Color.white)
-                                    .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 3)
-                                    .frame(width: 382, height: 158)
-                                
+                                    RoundedRectangle(cornerRadius: 21)
+                                        .fill(Color.white)
+                                        .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 3)
+                                        .frame(width: 382, height: 158)
                                 HStack {
                                     Image(pet.imageName)
                                         .resizable()
@@ -55,7 +55,7 @@ struct ServicesView: View {
                                         .frame(width: 158, height: 158)
                                         .clipped()
                                         .cornerRadius(21)
-                                    
+
                                     VStack(alignment: .leading) {
                                         HStack {
                                             Text(pet.name)
@@ -64,9 +64,9 @@ struct ServicesView: View {
                                                 .fontWeight(.semibold)
                                                 .font(.system(size: 17))
                                                 .padding(.leading, 6)
-                                            
+
                                             Spacer()
-                                            
+
                                             if pet.sex == .macho {
                                                 Image("genderMale")
                                                     .resizable()
@@ -81,52 +81,52 @@ struct ServicesView: View {
                                                     .padding(.trailing, 8)
                                             }
                                         }
-                                        
+
                                         Spacer().frame(height: 12)
-                                        
+
                                         HStack {
                                             Text("Espécie\n")
                                                 .foregroundColor(.gray)
                                             + Text("\(pet.species)")
                                                 .foregroundColor(.black)
-                                            
+
                                             Spacer().frame(width: 40)
-                                            
+
                                             Text("Idade\n")
                                                 .foregroundColor(.gray)
                                             + Text("\(pet.age)")
                                                 .foregroundColor(.black)
-                                            
+
                                         }.font(.system(size: 16))
                                             .padding(.leading, 8)
                                             .multilineTextAlignment(.leading)
-                                        
+
                                         Spacer().frame(height: 10)
-                                        
+
                                         HStack {
                                             Text("Peso\n")
                                                 .foregroundColor(.gray)
                                             + Text(String(format: "\(pet.mass) kg"))
                                                 .foregroundColor(.black)
-                                            
+
                                             Spacer().frame(width: 44)
-                                            
+
                                             Text("Raça\n")
                                                 .foregroundColor(.gray)
                                             + Text("\(pet.race)")
                                                 .foregroundColor(.black)
-                                            
+
                                         }.font(.system(size: 16))
                                             .padding(.leading, 8)
                                             .multilineTextAlignment(.leading)
                                     }
-                                    
+
                                     Spacer()
                                 }
-                                
+////
                             }
                             .frame(width: 382, height: 158)
-                            
+////
                         }
                     }
                 }
@@ -136,8 +136,3 @@ struct ServicesView: View {
 }
 
 
-struct ServicesView_Previews: PreviewProvider {
-    static var previews: some View {
-        ServicesView(pet: ContentHome().pets[0])
-    }
-}

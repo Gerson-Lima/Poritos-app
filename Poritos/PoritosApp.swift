@@ -20,5 +20,10 @@ struct PoritosApp: App {
 
 class TokenManager: ObservableObject {
     @Published var token: String = "53b76de6ca1e508efb191525ab64d4ac3fdbf93c"
+    @Published var petsArray: [[String: Any]] = []
 }
 let tokenManager = TokenManager()
+
+class GlobalData: ObservableObject {
+    @Published var globalNomesArray: [[String: Any]] = []
+}

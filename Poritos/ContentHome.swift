@@ -20,19 +20,21 @@ struct Pet: Identifiable {
     let name: String
     let species: String
     let race: String
-    let age: String
-    let mass: String
+    let age: Int
+    let mass: Float
     let sex: Sex
     enum Sex {
         case macho
         case femea
     }
     let imageName: String
-
+    
 }
+var globalPets: [[String: Any]] = []
 
 struct ContentHome: View {
     
+    @ObservedObject var globalData = GlobalData()
     @State private var AdCarousel = 0
     @State private var searchText = ""
     @State private var addPet = false
@@ -48,11 +50,7 @@ struct ContentHome: View {
         Product(name: "Brinquedo interativo", description: "Brinquedo recheável - Osso p/ cães (pet & Kauf)", price: 39.90, imageName: "osso")
     ]
     
-    let pets: [Pet] = [
-        Pet(name: "Tom", species: "Gato", race: "Siamês", age: "7 anos", mass: "15.6", sex: .macho, imageName: "pet1"),
-        Pet(name: "Saori", species: "Gato", race: "Munchkin", age: "2 anos", mass: "12.2", sex: .femea, imageName: "pet2")
-       
-    ]
+    @State public var pets: [Pet] = []
     
     var filteredProducts: [Product] {
         if searchText.isEmpty {
@@ -88,6 +86,10 @@ struct ContentHome: View {
                             VStack {
                                 
                                 Spacer().frame(width: 0, height: 22)
+                                
+                                    .onAppear(){
+                                        getFunc(contentHome: self)
+                                    }
                                 
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
@@ -295,15 +297,15 @@ struct ContentHome: View {
                             
                             LazyVStack {
                                 ForEach(pets) { pet in
-                                    PetServiceView(pet: pet)
+                                    PetServiceView(pet: pet, pets: $pets)
                                         .padding(.horizontal, 16)
                                         .padding(.bottom, 16)
                                 }
                             }
-                          
-                                NavigationLink(destination: AddPetView()){
-                                    Button(action: {addPet = true}) {
-                                    }
+                            
+                            NavigationLink(destination: AddPetView()){
+                                Button(action: {addPet = true}) {
+                                }
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
                                         .fill(Color.white)
@@ -482,17 +484,92 @@ struct PetView: View {
                 
                 Spacer().frame(width: 0, height: 10)
                 
+                    .onAppear {
+                        print(globalPets)
+                        
+                    }
             }
         }
     }
 }
 
+ func getFunc(contentHome: ContentHome) {
+    
+    let url = URL(string: "http://127.0.0.1:8000/api/animais/listar_animais_usuario/")!
+    var request = URLRequest(url: url)
+    
+    request.setValue("Token \(tokenManager.token)", forHTTPHeaderField: "Authorization")
+    request.httpMethod = "GET"
+    
+   
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        guard let data = data, error == nil else {
+            print("Erro: \(error?.localizedDescription ?? "Erro desconhecido")")
+            return
+        }
+        
+        var updatedPets = contentHome.pets
+        
+        do {
+            let animais = try JSONDecoder().decode([Animal].self, from: data)
+            
+            for animal in animais {
+                
+                let nome = animal.nome
+                let especie = animal.especie
+                let raca = animal.raca
+                let peso = animal.peso
+                let idade = animal.idade
+                let sexo = animal.sexo
+                let foto = animal.foto
+                
+                var pesoFloat: Float = 0.0
+                if let x = Float(peso) {
+                    pesoFloat = x
+                }
+                
+                if (sexo == "macho") {
+                   let  newPet = Pet(name: nome, species: especie, race: raca, age: idade, mass: pesoFloat, sex: .macho, imageName: "pet2")
+                    updatedPets.append(newPet)
+                } else {
+                    let newPet = Pet(name: nome, species: especie, race: raca, age: idade, mass: pesoFloat, sex: .femea, imageName: "pet2")
+                    updatedPets.append(newPet)
+                }
+                
+            }
+       
+        } catch {
+            print("Erro ao decodificar JSON: \(error)")
+        }
+        contentHome.pets = updatedPets
+        
+        print(contentHome.pets)
+        
+    }
+    
+    task.resume()
+}
+
+struct Animal: Codable {
+    let id: Int
+    let nome: String
+    let especie: String
+    let raca: String
+    let peso: String
+    let idade: Int
+    let sexo: String
+    let foto: String
+    let usuario: Int
+}
+
 struct PetServiceView: View {
     let pet: Pet
     
+    @Binding var pets: [Pet]
     @State var ServicesScreen = false
     
     var body: some View {
+        
         Button(action: {ServicesScreen = true}) {
             ZStack {
                 RoundedRectangle(cornerRadius: 21)
@@ -500,7 +577,7 @@ struct PetServiceView: View {
                     .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 3)
                     .frame(width: 382, height: 158)
                     .sheet(isPresented: $ServicesScreen) {
-                        ServicesView(pet: ContentHome().pets[0])
+                        ServicesView(pet: pet)
                     }
                 HStack {
                     Image(pet.imageName)
@@ -569,17 +646,17 @@ struct PetServiceView: View {
                                 .foregroundColor(.gray)
                             + Text("\(pet.race)")
                                 .foregroundColor(.black)
-                                 
+                            
                         }.font(.system(size: 16))
                             .padding(.leading, 8)
                             .multilineTextAlignment(.leading)
                     }
                     Spacer()
                 }
-//                Image(systemName: "chevron.right")
-//                    .padding(.leading, 320)
-//                    .padding(.top, 100)
-//                SETA LATERAL (DESNECESÁRIA?)
+                //                Image(systemName: "chevron.right")
+                //                    .padding(.leading, 320)
+                //                    .padding(.top, 100)
+                //                SETA LATERAL (DESNECESÁRIA?)
             }
         }
     }
