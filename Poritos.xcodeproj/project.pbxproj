@@ -14,7 +14,6 @@
 		BF6B536D2ABE5C5D000D1E35 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF6B536C2ABE5C5D000D1E35 /* LaunchScreen.storyboard */; };
 		BF745C6D2ADC0B1600F0F164 /* AddPetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF745C6C2ADC0B1600F0F164 /* AddPetView.swift */; };
 		BF796D572ABF61BF0014C31E /* ContentHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF796D562ABF61BF0014C31E /* ContentHome.swift */; };
-		BF91E5CA2AE071210062F121 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF91E5C92AE071210062F121 /* Services.swift */; };
 		BF9451322ABD1EB700481DAD /* passwordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9451312ABD1EB700481DAD /* passwordView.swift */; };
 		BFAE1F082ADC135000B70B4B /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAE1F072ADC135000B70B4B /* ImagePicker.swift */; };
 		BFBF8FD72ADED1F1004CBCD9 /* ServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBF8FD62ADED1F1004CBCD9 /* ServicesView.swift */; };
@@ -32,7 +31,6 @@
 		BF6B536C2ABE5C5D000D1E35 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BF745C6C2ADC0B1600F0F164 /* AddPetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetView.swift; sourceTree = "<group>"; };
 		BF796D562ABF61BF0014C31E /* ContentHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentHome.swift; sourceTree = "<group>"; };
-		BF91E5C92AE071210062F121 /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
 		BF9451312ABD1EB700481DAD /* passwordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = passwordView.swift; sourceTree = "<group>"; };
 		BFAE1F072ADC135000B70B4B /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		BFBF8FD62ADED1F1004CBCD9 /* ServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesView.swift; sourceTree = "<group>"; };
@@ -82,7 +80,6 @@
 				BF745C6C2ADC0B1600F0F164 /* AddPetView.swift */,
 				BFEE1F8B2ABB6FD7009D233A /* SignUpView.swift */,
 				BFBF8FD62ADED1F1004CBCD9 /* ServicesView.swift */,
-				BF91E5C92AE071210062F121 /* Services.swift */,
 				BF3260302AB9207000A1FEF9 /* Assets.xcassets */,
 				BF3260322AB9207000A1FEF9 /* Preview Content */,
 			);
@@ -171,7 +168,6 @@
 				BFBF8FD72ADED1F1004CBCD9 /* ServicesView.swift in Sources */,
 				BF9451322ABD1EB700481DAD /* passwordView.swift in Sources */,
 				BF745C6D2ADC0B1600F0F164 /* AddPetView.swift in Sources */,
-				BF91E5CA2AE071210062F121 /* Services.swift in Sources */,
 				BFF8DFFC2ABF316F00508776 /* LoginView.swift in Sources */,
 				BFAE1F082ADC135000B70B4B /* ImagePicker.swift in Sources */,
 				BF32602F2AB9206F00A1FEF9 /* ContentView.swift in Sources */,
