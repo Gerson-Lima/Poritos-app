@@ -104,5 +104,3 @@ class Networking {
         task.resume()
     }
 }
-
-

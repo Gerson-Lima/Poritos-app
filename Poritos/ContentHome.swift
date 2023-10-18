@@ -41,14 +41,7 @@ struct ContentHome: View {
     
     let images: [String] = ["1", "2", "3"]
     
-    let products: [Product] = [
-        Product(name: "Ração Whiskas", description: "Ração Whiskas Salmão p/ gatos adultos - 900g", price: 28.99, imageName: "whiskas (salmao)"),
-        Product(name: "Ração Whiskas", description: "Ração Whiskas Carne p/ gatos castrados - 900g", price: 27.99, imageName: "whiskas (carne)"),
-        Product(name: "Peitoral para passeio", description: "Peitoral p/ gatos filhotes - cores variadas", price: 24.90, imageName: "peitoral"),
-        Product(name: "Coleira (M)", description: "Coleira para cães de médio porte", price: 12.90, imageName: "coleira"),
-        Product(name: "Antipulgas", description: "Medicamento contra pulgas p/ cães filhotes - Nexgard", price: 39.90, imageName: "antipulgas"),
-        Product(name: "Brinquedo interativo", description: "Brinquedo recheável - Osso p/ cães (pet & Kauf)", price: 39.90, imageName: "osso")
-    ]
+    @State public var products: [Product] = []
     
     @State public var pets: [Pet] = []
     
@@ -89,7 +82,9 @@ struct ContentHome: View {
                                 
                                     .onAppear(){
                                         getFunc(contentHome: self)
+                                        getProducts(contentHome: self)
                                     }
+                                    
                                 
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
@@ -142,7 +137,7 @@ struct ContentHome: View {
                                     }
                                 }
                                 
-                                Spacer().frame(height: 40)
+                                Spacer().frame(height: 30)
                                 
                                 HStack {
                                     Text("Conheça nossos produtos")
@@ -182,7 +177,7 @@ struct ContentHome: View {
                                 }
                             }
                             
-                            Spacer().frame(height: 30)
+                            Spacer().frame(height: 8)
                             
                             Text("Meus pets")
                                 .font(.system(size: 20))
@@ -198,8 +193,6 @@ struct ContentHome: View {
                                         PetView(pet: pet)
                                             .padding(.leading, 16)
                                             .padding(.bottom, 16)
-                                            .padding(.top, 10)
-                                        
                                     }
                                     
                                     
@@ -348,13 +341,31 @@ struct ContentHome: View {
                             .ignoresSafeArea()
                         ScrollView(.vertical, showsIndicators: false) {
                             VStack {
-                                Text("Carrinho") //CONTEUDO DO CARRINHO AQUI
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Color.gray)
+                                        .opacity(0.2)
+                                        .frame(height: 36)
+                                        .padding(.horizontal, 16)
+                                    
+                                    HStack {
+                                        TextField("", text: $searchText, prompt: Text("Buscar").foregroundColor(.gray))
+                                            .foregroundColor(.black)
+                                            .padding(.horizontal, 30)
+                                            .textContentType(.name)
+                                        
+                                        Image(systemName: "magnifyingglass")
+                                            .foregroundColor(.gray)
+                                            .padding(.horizontal, 28)
+                                    }
+                                }
+                                .padding(.top, 22)
                             }
                         }
-                        
                     }
+                    
                     Spacer().frame(height: 0)
-                        .navigationBarTitle("Carrinho")
+                        .navigationBarTitle("Loja")
                         .edgesIgnoringSafeArea(.bottom)
                         .background(ignoresSafeAreaEdges: .all)
                 }
@@ -362,7 +373,13 @@ struct ContentHome: View {
             
             .tabItem {
                 Image(systemName: "cart.fill")
-                Text("Carrinho")
+                Text("Loja")
+                
+                
+                
+                
+                
+                
             }
             NavigationView {
                 NavigationStack {
@@ -403,11 +420,17 @@ struct ContentHome: View {
                 
                 VStack {
                     Spacer().frame(width: 0, height: 10)
-                    if let imageName = product.imageName {
-                        Image(imageName)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 100, height: 100)
+                    if let imageUrlString = product.imageName,
+                       let imageUrl = URL(string: imageUrlString) {
+                        AsyncImage(url: imageUrl) { image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 100, height: 100)
+                        } placeholder: {
+                            // Placeholder enquanto a imagem está sendo carregada
+                            ProgressView()
+                        }
                     }
                     
                     Text(product.name)
@@ -521,7 +544,7 @@ struct PetView: View {
                 let peso = animal.peso
                 let idade = animal.idade
                 let sexo = animal.sexo
-                let foto = animal.foto
+//                let foto = animal.foto
                 
                 var pesoFloat: Float = 0.0
                 if let x = Float(peso) {
@@ -543,10 +566,57 @@ struct PetView: View {
         }
         contentHome.pets = updatedPets
         
-        print(contentHome.pets)
+//        print(contentHome.pets)
         
     }
     
+    task.resume()
+}
+
+func getProducts(contentHome: ContentHome) {
+    guard let url = URL(string: "http://127.0.0.1:8000/api/produtos/") else {
+        fatalError("URL inválida")
+    }
+
+    // Crie a tarefa de sessão
+    let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        // Verifique se houve algum erro
+        if let error = error {
+            print("Erro ao fazer a requisição: \(error)")
+            return
+        }
+
+        // Verifique se a resposta contém dados
+        guard let data = data else {
+            print("Nenhum dado recebido")
+            return
+        }
+
+        var updatedProducts = contentHome.products
+
+        do {
+               // Tente decodificar os dados como um array de produtos
+               let jsonDecoder = JSONDecoder()
+               let produtos = try jsonDecoder.decode([Produto].self, from: data)
+print("oi")
+            for produto in produtos {
+                
+                var precoDouble: Double = 0.0
+                if let y = Double(produto.preco) {
+                    precoDouble = y
+                }
+                
+                let newProduct = Product(name: produto.nome, description: produto.descricao, price: precoDouble, imageName: produto.imagem)
+                updatedProducts.append(newProduct)
+            }
+
+        } catch {
+            print("Erro ao decodificar JSON: \(error)")
+        }
+        contentHome.products = updatedProducts
+        print(contentHome.products)
+    }
+
     task.resume()
 }
 
@@ -560,6 +630,18 @@ struct Animal: Codable {
     let sexo: String
     let foto: String
     let usuario: Int
+}
+
+struct Produto: Codable {
+    let id: Int
+    let nome: String
+    let descricao: String
+    let preco: String
+    let desconto: String
+    let estoque: Int
+    let disponivel: Bool
+    let data_criacao: String
+    let imagem: String
 }
 
 struct PetServiceView: View {
