@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF01304A2AE156FF00053470 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0130492AE156FF00053470 /* Search.swift */; };
 		BF32602D2AB9206F00A1FEF9 /* PoritosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF32602C2AB9206F00A1FEF9 /* PoritosApp.swift */; };
 		BF32602F2AB9206F00A1FEF9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF32602E2AB9206F00A1FEF9 /* ContentView.swift */; };
 		BF3260312AB9207000A1FEF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF3260302AB9207000A1FEF9 /* Assets.xcassets */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BF0130492AE156FF00053470 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		BF3260292AB9206E00A1FEF9 /* Poritos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Poritos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF32602C2AB9206F00A1FEF9 /* PoritosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoritosApp.swift; sourceTree = "<group>"; };
 		BF32602E2AB9206F00A1FEF9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				BF32602C2AB9206F00A1FEF9 /* PoritosApp.swift */,
+				BF0130492AE156FF00053470 /* Search.swift */,
 				BFAE1F072ADC135000B70B4B /* ImagePicker.swift */,
 				BF9451312ABD1EB700481DAD /* passwordView.swift */,
 				BFEE1F922ABB934C009D233A /* Networking.swift */,
@@ -174,6 +177,7 @@
 				BFEE1F8C2ABB6FD7009D233A /* SignUpView.swift in Sources */,
 				BF32602D2AB9206F00A1FEF9 /* PoritosApp.swift in Sources */,
 				BFEE1F932ABB934C009D233A /* Networking.swift in Sources */,
+				BF01304A2AE156FF00053470 /* Search.swift in Sources */,
 				BF796D572ABF61BF0014C31E /* ContentHome.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

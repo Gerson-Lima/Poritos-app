@@ -16,6 +16,7 @@ struct LoginView: View {
     @State private var errorMessage: String? = nil
     @State private var redirectToHome = false
     @State private var showAlert: Bool = false
+    @State private var showAlertError: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -95,6 +96,14 @@ struct LoginView: View {
                                     SignUpView()
                                 }
                             
+                                .alert(isPresented: $showAlertError) {
+                                    Alert(
+                                        title: Text("Erro na requisição..."),
+                                        message: Text("Falha ao conectar ao servidor"),
+                                        dismissButton: .default(Text("OK"))
+                                    )
+                                }
+                    
                             HStack{
                                 Text("Ainda não tem uma conta?")
                                     .font(Font.system(size: 16, weight: .regular))
@@ -145,6 +154,7 @@ struct LoginView: View {
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 print("Erro na requisição: Erro ao conectar ao servidor")
+                showAlertError = true
                 return
             }
             
