@@ -81,7 +81,7 @@ struct ContentHome: View {
                                 Spacer().frame(width: 0, height: 22)
                                 
                                     .onAppear(){
-                                        getFunc(contentHome: self)
+                                        getFuncAnimal(contentHome: self)
                                         getProducts(contentHome: self)
                                     }
                                     
@@ -165,7 +165,7 @@ struct ContentHome: View {
                                 } else {
                                     ScrollView(.horizontal, showsIndicators: false) {
                                         LazyHStack {
-                                            ForEach(topProducts) { product in
+                                            ForEach(topProducts.prefix(6)) { product in
                                                 CardView(product: product)
                                                     .frame(width: 210, height: 260, alignment: .leading)
                                                     .padding(.leading, 16)
@@ -240,7 +240,7 @@ struct ContentHome: View {
                 
                 
                 .onAppear {
-                    Timer.scheduledTimer(withTimeInterval: 4, repeats: true){ timer in
+                    Timer.scheduledTimer(withTimeInterval: 5, repeats: true){ timer in
                         if self.AdCarousel + 1 == self.images.count {
                             self.AdCarousel = 0
                         } else {
@@ -358,8 +358,29 @@ struct ContentHome: View {
                                             .foregroundColor(.gray)
                                             .padding(.horizontal, 28)
                                     }
+                    
                                 }
                                 .padding(.top, 22)
+                                
+                                if !noResultsMessage.isEmpty {
+                                    Text(noResultsMessage)
+                                        .foregroundColor(.gray)
+                                        .font(.system(size: 20))
+                                        .fontWeight(.regular)
+                                        .padding()
+                                } else {
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        LazyHStack {
+                                            ForEach(topProducts) { product in
+                                                CardViewLoja(product: product)
+                                                    .frame(width: 205, height: 260)
+                                                    .padding(.leading, 16)
+                                                    .padding(.bottom, 16)
+                                                    .padding(.top, 10)
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -472,6 +493,69 @@ struct ContentHome: View {
     }
 }
 
+struct CardViewLoja: View {
+    let product: Product
+    
+    var body: some View {
+        ZStack{
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.white)
+                .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 3)
+            
+            VStack {
+                Spacer().frame(width: 0, height: 10)
+                if let imageUrlString = product.imageName,
+                   let imageUrl = URL(string: imageUrlString) {
+                    AsyncImage(url: imageUrl) { image in
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100, height: 100)
+                    } placeholder: {
+                        // Placeholder enquanto a imagem está sendo carregada
+                        ProgressView()
+                    }
+                }
+                
+                Text(product.name)
+                    .foregroundColor(.black)
+                    .fontWeight(.bold)
+                    .font(.system(size: 17))
+                    .padding(.top, 5)
+                    .frame(maxWidth: 190, alignment: .leading)
+                
+                Spacer().frame(width: 0, height: 10)
+                
+                Text(product.description)
+                    .foregroundColor(.gray)
+                    .font(.system(size: 14))
+                    .padding(.top, 1)
+                    .padding(.horizontal, 2)
+                    .frame(maxWidth: 190, alignment: .leading)
+                
+                Spacer().frame(width: 0, height: 10)
+                
+                HStack {
+                    Text(String(format: "R$ %.2f", product.price))
+                        .foregroundColor(.black)
+                        .font(.system(size: 22))
+                        .fontWeight(.semibold)
+                        .padding(.top, 5)
+                    
+                    Spacer().frame(width: 40, height: 0)
+                    
+                    Button(action: {}) {
+                        Image(systemName: "cart.circle.fill")
+                            .foregroundColor(Color("PrimaryColor"))
+                            .font(.system(size: 45))
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 struct PetView: View {
     let pet: Pet
     
@@ -507,16 +591,16 @@ struct PetView: View {
                 
                 Spacer().frame(width: 0, height: 10)
                 
-                    .onAppear {
-                        print(globalPets)
-                        
-                    }
+//                    .onAppear {
+//                        print(globalPets)
+//                        
+//                    }
             }
         }
     }
 }
 
- func getFunc(contentHome: ContentHome) {
+ func getFuncAnimal(contentHome: ContentHome) {
     
     let url = URL(string: "http://127.0.0.1:8000/api/animais/listar_animais_usuario/")!
     var request = URLRequest(url: url)
@@ -552,7 +636,7 @@ struct PetView: View {
                 }
                 
                 if (sexo == "macho") {
-                   let  newPet = Pet(name: nome, species: especie, race: raca, age: idade, mass: pesoFloat, sex: .macho, imageName: "pet2")
+                   let  newPet = Pet(name: nome, species: especie, race: raca, age: idade, mass: pesoFloat, sex: .macho, imageName: "pet1")
                     updatedPets.append(newPet)
                 } else {
                     let newPet = Pet(name: nome, species: especie, race: raca, age: idade, mass: pesoFloat, sex: .femea, imageName: "pet2")
@@ -592,13 +676,13 @@ func getProducts(contentHome: ContentHome) {
             return
         }
 
-        var updatedProducts = contentHome.products
+        var updatedProducts = [Product]()
 
         do {
                // Tente decodificar os dados como um array de produtos
                let jsonDecoder = JSONDecoder()
                let produtos = try jsonDecoder.decode([Produto].self, from: data)
-print("oi")
+            
             for produto in produtos {
                 
                 var precoDouble: Double = 0.0
@@ -614,7 +698,7 @@ print("oi")
             print("Erro ao decodificar JSON: \(error)")
         }
         contentHome.products = updatedProducts
-        print(contentHome.products)
+//        print(contentHome.products)
     }
 
     task.resume()
