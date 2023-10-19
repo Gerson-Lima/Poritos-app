@@ -219,6 +219,7 @@ struct ContentHome: View {
                                             .font(.system(size: 17))
                                             .foregroundColor(Color("PrimaryColor"))
                                     }.padding(.horizontal)
+                                        .padding(.bottom)
                                 }
                             }
                         }
@@ -361,6 +362,7 @@ struct ContentHome: View {
                     
                                 }
                                 .padding(.top, 22)
+                                .padding(.bottom, 16)
                                 
                                 if !noResultsMessage.isEmpty {
                                     Text(noResultsMessage)
@@ -369,14 +371,15 @@ struct ContentHome: View {
                                         .fontWeight(.regular)
                                         .padding()
                                 } else {
-                                    ScrollView(.horizontal, showsIndicators: false) {
-                                        LazyHStack {
+                                    ScrollView(.vertical, showsIndicators: true) { // Mudei para ScrollView vertical
+                                        LazyVGrid(columns: [
+                                            GridItem(.flexible(), spacing: -16),
+                                            GridItem(.flexible(), spacing: -16)
+                                        ]) {
                                             ForEach(topProducts) { product in
                                                 CardViewLoja(product: product)
-                                                    .frame(width: 205, height: 260)
-                                                    .padding(.leading, 16)
-                                                    .padding(.bottom, 16)
-                                                    .padding(.top, 10)
+                                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                                    .padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16)) // Espaçamento das bordas
                                             }
                                         }
                                     }
@@ -501,6 +504,7 @@ struct CardViewLoja: View {
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color.white)
                 .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 3)
+                .frame(height: 255)
             
             VStack {
                 Spacer().frame(width: 0, height: 10)
@@ -522,7 +526,9 @@ struct CardViewLoja: View {
                     .fontWeight(.bold)
                     .font(.system(size: 17))
                     .padding(.top, 5)
-                    .frame(maxWidth: 190, alignment: .leading)
+                    .frame(maxWidth: 160, alignment: .leading)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
                 
                 Spacer().frame(width: 0, height: 10)
                 
@@ -531,16 +537,19 @@ struct CardViewLoja: View {
                     .font(.system(size: 14))
                     .padding(.top, 1)
                     .padding(.horizontal, 2)
-                    .frame(maxWidth: 190, alignment: .leading)
+                    .frame(maxWidth: 160, alignment: .leading)
+                    .lineLimit(2)
+                    .truncationMode(.tail)
                 
                 Spacer().frame(width: 0, height: 10)
                 
                 HStack {
                     Text(String(format: "R$ %.2f", product.price))
                         .foregroundColor(.black)
-                        .font(.system(size: 22))
+                        .font(.system(size: 16))
                         .fontWeight(.semibold)
                         .padding(.top, 5)
+                        .padding(.leading, 3)
                     
                     Spacer().frame(width: 40, height: 0)
                     
@@ -548,9 +557,14 @@ struct CardViewLoja: View {
                         Image(systemName: "cart.circle.fill")
                             .foregroundColor(Color("PrimaryColor"))
                             .font(.system(size: 45))
+                            .frame(width: 40, height: 40)
+                    }
+                    .padding(.top, 4)
+                    .alignmentGuide(HorizontalAlignment.center) { d in
+                        d[.bottom]
                     }
                 }
-            }
+            } .padding(.bottom, 8)
         }
     }
 }
@@ -591,10 +605,6 @@ struct PetView: View {
                 
                 Spacer().frame(width: 0, height: 10)
                 
-//                    .onAppear {
-//                        print(globalPets)
-//                        
-//                    }
             }
         }
     }
@@ -615,7 +625,7 @@ struct PetView: View {
             return
         }
         
-        var updatedPets = contentHome.pets
+        var updatedPets = [Pet]()
         
         do {
             let animais = try JSONDecoder().decode([Animal].self, from: data)
@@ -806,7 +816,7 @@ struct PetServiceView: View {
                             + Text(String(format: "\(pet.mass) kg"))
                                 .foregroundColor(.black)
                             
-                            Spacer().frame(width: 44)
+                            Spacer().frame(width: 51)
                             
                             Text("Raça\n")
                                 .foregroundColor(.gray)
