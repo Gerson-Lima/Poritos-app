@@ -34,6 +34,7 @@ var globalPets: [[String: Any]] = []
 
 struct ContentHome: View {
     
+    @State private var isShowingContentView = false
     @ObservedObject var globalData = GlobalData()
     @State private var AdCarousel = 0
     @State private var searchText = ""
@@ -42,8 +43,9 @@ struct ContentHome: View {
     let images: [String] = ["1", "2", "3"]
     
     @State public var products: [Product] = []
-    
     @State public var pets: [Pet] = []
+    @State public var username: String = ""
+    @State public var fullName: String = ""
     
     var filteredProducts: [Product] {
         if searchText.isEmpty {
@@ -83,8 +85,10 @@ struct ContentHome: View {
                                     .onAppear(){
                                         getFuncAnimal(contentHome: self)
                                         getProducts(contentHome: self)
+                                        getUserInfo(contentHome: self)
+                                       
                                     }
-                                    
+                                
                                 
                                 SearchView(searchText: $searchText)
                                 
@@ -341,7 +345,7 @@ struct ContentHome: View {
                                             .foregroundColor(.gray)
                                             .padding(.horizontal, 28)
                                     }
-                    
+                                    
                                 }
                                 .padding(.top, 22)
                                 .padding(.bottom, 16)
@@ -407,13 +411,50 @@ struct ContentHome: View {
                                             .shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 0)
                                             .padding(.top, 30)
                                         
+                                        Button(action: {}) {
+                                            Image(systemName: "square.and.pencil")
+                                                .resizable()
+                                                .frame(width: 24, height: 24)
+                                                .foregroundColor(Color("PrimaryColor"))
+                                        }
+                                                .offset(x: 160, y: -160)
+                                        
+
+                                           
+                                        HStack {
+                                            Image("profileNull")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 92, height: 92)
+                                                .clipShape(Circle())
+                                                .overlay(
+                                                    Circle()
+                                                        .stroke(Color("PrimaryColor"), lineWidth: 2)
+                                                        .frame(width: 92, height: 92)
+                                                )
+
+                                            VStack(alignment: .leading) {
+                                                Text("\(fullName)")
+                                                    .font(.system(size: 20, weight: .bold))
+                                                Text("\(username)")
+                                                    .font(.system(size: 20, weight: .regular))
+                                            }
+                                            .padding(.leading, 12)
+                                        }
+                                        .padding(.bottom, 65)
+                                        
+                                        
+                                        .offset(y: -30)
+                                        .offset(x: -24)
+                                        .padding(.bottom, 98)
+                                        
                                         ScrollView(.horizontal, showsIndicators: false) {
                                             HStack(spacing: 10) {
                                                 ForEach(pets, id: \.name) { pet in
                                                     ProfilePetView(pet: pet)
                                                         .cornerRadius(10)
                                                         .padding(.trailing, 16)
-                                                        .padding(.bottom, 16)
+                                                        .padding(.bottom, 26)
                                                 }
                                             }
                                         }
@@ -425,11 +466,12 @@ struct ContentHome: View {
                                             .foregroundColor(.black)
                                             .offset(y: -30)
                                             .offset(x: -120)
-                                            .padding(.top, 28)
-                                            
-//                                        Spacer()
+                                            .padding(.top, 24)
+                                        
+                                       
                                     }
                                 } .padding(.bottom, -10)
+                                
                                 
                                 VStack {
                                     ZStack {
@@ -441,12 +483,7 @@ struct ContentHome: View {
                                             .shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 0)
                                             .padding(.top, 30)
                                         
-                                            .onAppear(){
-                                                getUserInfo(contentHome: self)
-                                                
-                                            }
-                                        
-                                        VStack(spacing: 20) { // Espaço vertical entre os botões
+                                        VStack(spacing: 20) {
                                             Button(action: {}) {
                                                 HStack {
                                                     Image(systemName: "gear")
@@ -455,7 +492,7 @@ struct ContentHome: View {
                                                     Image(systemName: "chevron.right")
                                                         .padding(.leading, 180)
                                                 }
-                                                .frame(maxWidth: 382 - 26, alignment: .leading)
+                                                .frame(maxWidth: 382 - 22, alignment: .leading)
                                             }
                                             
                                             Divider().frame(width: 382)
@@ -495,16 +532,18 @@ struct ContentHome: View {
                                                 .frame(maxWidth: 382 - 26, alignment: .leading)
                                             }
                                             Divider().frame(width: 382)
-                                            
-                                            Button(action: {}) {
-                                                HStack {
+                                            HStack {
+                                                NavigationLink(destination: ContentView()) {
+                                                    Button(action: {isShowingContentView = true}) {
+                                                    }
                                                     Image(systemName: "rectangle.portrait.and.arrow.forward")
                                                         .foregroundColor(Color("PrimaryColor"))
                                                     Text("Sair")
                                                     Image(systemName: "chevron.right")
                                                         .padding(.leading, 256)
                                                 }
-                                                .frame(maxWidth: 382 - 26, alignment: .leading)
+                                                    .frame(maxWidth: 382 - 28, alignment: .leading)
+                                                
                                             }
                                         }.padding(.top, 28)
                                     } .padding(.bottom, 28)
@@ -512,7 +551,7 @@ struct ContentHome: View {
                             }
                         }
                     }
-                   
+                    
                     Spacer().frame(height: 0)
                         .navigationBarTitle("Perfil")
                         .navigationBarItems(
@@ -765,7 +804,23 @@ struct ProfilePetView: View {
     }
 }
 
- func getFuncAnimal(contentHome: ContentHome) {
+struct UserView: View {
+    let user: User
+
+    var body: some View {
+        VStack {
+            Spacer().frame(width: 0, height: 10)
+
+            Text("\(user.nome)")
+            Text("\(user.usuario)")
+
+            Spacer().frame(width: 0, height: 10)
+        }
+    }
+}
+
+
+func getFuncAnimal(contentHome: ContentHome) {
     
     let url = URL(string: "http://127.0.0.1:8000/api/animais/listar_animais_usuario/")!
     var request = URLRequest(url: url)
@@ -773,7 +828,7 @@ struct ProfilePetView: View {
     request.setValue("Token \(tokenManager.token)", forHTTPHeaderField: "Authorization")
     request.httpMethod = "GET"
     
-   
+    
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
         guard let data = data, error == nil else {
             print("Erro: \(error?.localizedDescription ?? "Erro desconhecido")")
@@ -793,7 +848,7 @@ struct ProfilePetView: View {
                 let peso = animal.peso
                 let idade = animal.idade
                 let sexo = animal.sexo
-//                let foto = animal.foto
+                //                let foto = animal.foto
                 
                 var pesoFloat: Float = 0.0
                 if let x = Float(peso) {
@@ -801,7 +856,7 @@ struct ProfilePetView: View {
                 }
                 
                 if (sexo == "macho") {
-                   let  newPet = Pet(name: nome, species: especie, race: raca, age: idade, mass: pesoFloat, sex: .macho, imageName: "pet1")
+                    let  newPet = Pet(name: nome, species: especie, race: raca, age: idade, mass: pesoFloat, sex: .macho, imageName: "pet1")
                     updatedPets.append(newPet)
                 } else {
                     let newPet = Pet(name: nome, species: especie, race: raca, age: idade, mass: pesoFloat, sex: .femea, imageName: "pet2")
@@ -809,7 +864,7 @@ struct ProfilePetView: View {
                 }
                 
             }
-       
+            
         } catch {
             print("Erro ao decodificar JSON: \(error)")
         }
@@ -839,9 +894,11 @@ func getUserInfo(contentHome: ContentHome) {
         do {
             let userInfo = try JSONDecoder().decode(User.self, from: data)
             
+            contentHome.username = userInfo.usuario
+            contentHome.fullName = userInfo.nome
+            
         } catch {
             print("Erro ao decodificar JSON: \(error)")
-            
         }
         
     }
@@ -853,7 +910,7 @@ func getProducts(contentHome: ContentHome) {
     guard let url = URL(string: "http://127.0.0.1:8000/api/produtos/") else {
         fatalError("URL inválida")
     }
-
+    
     // Crie a tarefa de sessão
     let task = URLSession.shared.dataTask(with: url) { data, response, error in
         // Verifique se houve algum erro
@@ -861,19 +918,19 @@ func getProducts(contentHome: ContentHome) {
             print("Erro ao fazer a requisição: \(error)")
             return
         }
-
+        
         // Verifique se a resposta contém dados
         guard let data = data else {
             print("Nenhum dado recebido")
             return
         }
-
+        
         var updatedProducts = [Product]()
-
+        
         do {
-               // Tente decodificar os dados como um array de produtos
-               let jsonDecoder = JSONDecoder()
-               let produtos = try jsonDecoder.decode([Produto].self, from: data)
+            // Tente decodificar os dados como um array de produtos
+            let jsonDecoder = JSONDecoder()
+            let produtos = try jsonDecoder.decode([Produto].self, from: data)
             
             for produto in produtos {
                 
@@ -885,14 +942,14 @@ func getProducts(contentHome: ContentHome) {
                 let newProduct = Product(name: produto.nome, description: produto.descricao, price: precoDouble, imageName: produto.imagem)
                 updatedProducts.append(newProduct)
             }
-
+            
         } catch {
             print("Erro ao decodificar JSON: \(error)")
         }
         contentHome.products = updatedProducts
-//        print(contentHome.products)
+        //        print(contentHome.products)
     }
-
+    
     task.resume()
 }
 
