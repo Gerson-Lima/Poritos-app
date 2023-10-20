@@ -151,11 +151,10 @@ struct ContentHome: View {
                                             ForEach(topProducts.prefix(6)) { product in
                                                 CardView(product: product)
                                                     .frame(width: 210, height: 260, alignment: .leading)
-                                                    .padding(.leading, 16)
+                                                    .padding(.trailing, 16)
                                                     .padding(.bottom, 16)
-                                                    .padding(.top, 10)
                                             }
-                                        }
+                                        } .padding(.leading, 20)
                                     }
                                 }
                             }
@@ -354,7 +353,7 @@ struct ContentHome: View {
                                         .fontWeight(.regular)
                                         .padding()
                                 } else {
-                                    ScrollView(.vertical, showsIndicators: true) { // Mudei para ScrollView vertical
+                                    ScrollView(.vertical, showsIndicators: true) {
                                         LazyVGrid(columns: [
                                             GridItem(.flexible(), spacing: -16),
                                             GridItem(.flexible(), spacing: -16)
@@ -362,10 +361,11 @@ struct ContentHome: View {
                                             ForEach(topProducts) { product in
                                                 CardViewLoja(product: product)
                                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                                    .padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16)) // Espaçamento das bordas
+                                                    .padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
                                             }
                                         }
                                     }
+                                    .padding(.bottom, 20)
                                 }
                             }
                         }
@@ -373,13 +373,19 @@ struct ContentHome: View {
                     
                     Spacer().frame(height: 0)
                         .navigationBarTitle("Loja")
+                        .navigationBarItems(
+                            trailing: Button(action: {}) {
+                                Image(systemName: "bell.badge").foregroundColor(Color("PrimaryColor"))})
+                        .navigationBarItems(
+                            trailing: Button(action: {}) {
+                                Image(systemName: "cart").foregroundColor(Color("PrimaryColor"))})
                         .edgesIgnoringSafeArea(.bottom)
                         .background(ignoresSafeAreaEdges: .all)
                 }
             }
             
             .tabItem {
-                Image(systemName: "cart.fill")
+                Image(systemName: "bag")
                 Text("Loja")
             }
             
@@ -391,7 +397,21 @@ struct ContentHome: View {
                             .ignoresSafeArea()
                         ScrollView(.vertical, showsIndicators: false) {
                             VStack {
-                                Text("Perfil") //CONTEUDO DO PERFIL AQUI
+                                ZStack {
+                                    Rectangle()
+                                      .foregroundColor(.clear)
+                                      .frame(width: 382, height: 421)
+                                      .background(.white)
+                                      .cornerRadius(21)
+                                      .shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 0)
+                                      .padding(.top, 30)
+                                    HStack{
+                                        ForEach(pets, id: \.name) { pet in
+                                            PetView(pet: pet)
+                                                .padding(10)
+                                        }
+                                    }
+                                }
                             }
                         }
                         

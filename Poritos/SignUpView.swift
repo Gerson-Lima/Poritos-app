@@ -11,13 +11,15 @@ struct SignUpView: View {
     @Environment(\.presentationMode) var presentation
     
     @State private var name: String = ""
-    @State private var birth: Date = Date()
+    @State private var birth: String = ""
     @State private var CPF: String = ""
     @State private var phone: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var passwordConfirm: String = ""
     @State private var responseText = ""
+    @State private var alertSuccess = false
+    @State private var alertError = false
     
     var body: some View {
         NavigationView {
@@ -52,7 +54,7 @@ struct SignUpView: View {
                         
                         TextField("", text: $name, prompt: Text("Nome").foregroundColor(Color(red: 0.8, green: 0.8, blue: 0.8, opacity: 0.8)))
                             .foregroundColor(Color.black)
-                            .autocapitalization(.none)
+//                            .autocapitalization(.none)
                             .font(Font.system(size: 16, weight: .regular))
                             .padding(.bottom, 16)
                             .padding(.top, 16)
@@ -63,9 +65,8 @@ struct SignUpView: View {
                         
                         Spacer().frame(height: 20)
                         
-                        DatePicker("Data de nascimento:", selection: $birth, displayedComponents: [.date])
-                            .accentColor(Color("PrimaryColor"))
-                            .foregroundColor(Color(red: 0.8, green: 0.8, blue: 0.8, opacity: 0.9))
+                        TextField("Data de nascimento", text: $birth)
+                            .keyboardType(.numbersAndPunctuation)
                             .font(Font.system(size: 16, weight: .regular))
                             .padding(.bottom, 16)
                             .padding(.top, 16)
@@ -105,6 +106,7 @@ struct SignUpView: View {
                         
                         TextField("", text: $email, prompt: Text("E-mail").foregroundColor(Color(red: 0.8, green: 0.8, blue: 0.8, opacity: 0.8)))
                             .foregroundColor(Color.black)
+                            .autocapitalization(.none)
                             .font(Font.system(size: 16, weight: .regular))
                             .padding(.bottom, 16)
                             .padding(.top, 16)
@@ -118,6 +120,7 @@ struct SignUpView: View {
                         SecureTextField(text: $password, placeholder: "Senha")
                             .foregroundColor(Color.black)
                             .font(Font.system(size: 16, weight: .regular))
+                            .autocapitalization(.none)
                             .padding(.bottom, 16)
                             .padding(.top, 16)
                             .padding(.horizontal)
@@ -130,6 +133,7 @@ struct SignUpView: View {
                         SecureTextField(text: $passwordConfirm, placeholder: "Confirmar Senha")
                             .foregroundColor(Color.black)
                             .font(Font.system(size: 16, weight: .regular))
+                            .autocapitalization(.none)
                             .padding(.bottom, 16)
                             .padding(.top, 16)
                             .padding(.horizontal)
@@ -140,12 +144,19 @@ struct SignUpView: View {
                         Spacer().frame(height: 52)
                         
                         Button(action: {
-                            Networking.signup(name: name, birth: birth, CPF: CPF, phone: phone, email: email, password: password, passwordConfirm: passwordConfirm) { result in
-                                switch result {
-                                case .success(let token):
-                                    responseText = token
-                                case .failure(let error):
-                                    responseText = "Erro: \(error.localizedDescription)"
+                            // Executa a chamada de rede em segundo plano
+                            DispatchQueue.global().async {
+                                Networking.signup(name: name, birth: birth, CPF: CPF, phone: phone, email: email, password: password, passwordConfirm: passwordConfirm) { result in
+                                    switch result {
+                                    case .success(let message):
+                                        responseText = message
+                                        alertSuccess = true
+                                        
+                                    case .failure(let error):
+                                        responseText = "Erro: \(error.localizedDescription)"
+                                        alertError = true
+                                    }
+                                   
                                 }
                             }
                         }) {
@@ -158,6 +169,26 @@ struct SignUpView: View {
                                 .cornerRadius(10)
                                 .frame(height: 60)
                         }
+                        .alert(isPresented: $alertError) {
+                            Alert(
+                                title: Text("Erro."),
+                                message: Text("Ocorreu um erro ao cadastrar usuário."),
+                                dismissButton: .default(Text("OK")){
+                                    presentation.wrappedValue.dismiss()
+                                }
+                            )
+                        }
+
+                        .alert(isPresented: $alertSuccess) {
+                            Alert(
+                                title: Text("Sucesso."),
+                                message: Text("Usuário cadastrado com sucesso!"),
+                                dismissButton: .default(Text("OK")) {
+                                    presentation.wrappedValue.dismiss()
+                                }
+                            )
+                        }
+                                        
                         Spacer().frame(height: 60)
                     } .padding(30)
                         .padding(.top, 2)

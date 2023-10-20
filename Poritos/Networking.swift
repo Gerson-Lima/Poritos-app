@@ -4,55 +4,59 @@
 //
 //  Created by Gerson Lima on 20/09/23.
 //
-
+import Combine
 import Foundation
 import SwiftUI
 
 class Networking {
-    @State private var showAlert: Bool = false
-    
-    static func signup(name: String, birth: Date, CPF: String, phone: String, email: String, password: String, passwordConfirm: String, completion: @escaping (Result<String, Error>) -> Void) {
-        
-        guard let url = URL(string: "http://127.0.0.1:8000/api/login/") else {
-            completion(.failure(NSError(domain: "URL inválida", code: 0, userInfo: nil)))
+    static func signup(name: String, birth: String, CPF: String, phone: String, email: String, password: String, passwordConfirm: String, completion: @escaping (Result<String, Error>) -> Void) {
+        guard let url = URL(string: "http://127.0.0.1:8000/api/register/") else {
+            completion(.failure(NSError(domain: "Networking", code: 0, userInfo: [NSLocalizedDescriptionKey: "URL inválida"])))
             return
         }
-        
-        let body: [String: String] = ["name": name, "birth": birth.description]
-        
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let json: [String: Any] = [
+            "tipo_usuario": "cliente",
+            "nome": name,
+            "email": email,
+            "password": password,
+            "data_nascimento": birth,
+            "cpf": CPF,
+            "celular": phone
+        ]
+
         do {
-            let jsonData = try JSONSerialization.data(withJSONObject: body)
-            
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
+            let jsonData = try JSONSerialization.data(withJSONObject: json)
             request.httpBody = jsonData
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-                
-                struct TokenResponse: Codable {
-                    let token: String
-                }
-                
-                if let data = data {
-                    do {
-                        let tokenResponse = try JSONDecoder().decode(TokenResponse.self, from: data)
-                        let token = tokenResponse.token
-                        completion(.success(token))
-                    } catch {
-                        completion(.failure(error))
-                    }
-                }
-            }.resume()
-            
         } catch {
             completion(.failure(error))
+            return
         }
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                completion(.failure(error ?? NSError(domain: "Networking", code: 1, userInfo: [NSLocalizedDescriptionKey: "Erro na requisição: Erro ao conectar ao servidor"])))
+                return
+            }
+
+            do {
+                if let resposta = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                    if let errorMessage = resposta["erro"] as? String {
+                        completion(.failure(NSError(domain: "Networking", code: 2, userInfo: [NSLocalizedDescriptionKey: errorMessage])))
+                    } else {
+                        completion(.success("Registro bem-sucedido"))
+                    }
+                }
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
     }
+
     
     static func enviarRequisicao(nome: String, especie: String, raca: String, idade: String, sexo: Pet.Sex, peso: String, image: Image?, showAlert: Binding<Bool>) {
         
