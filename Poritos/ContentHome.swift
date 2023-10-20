@@ -89,7 +89,6 @@ struct ContentHome: View {
                                        
                                     }
                                 
-                                
                                 SearchView(searchText: $searchText)
                                 
                                 Spacer().frame(width: 20, height: 24)
@@ -348,7 +347,7 @@ struct ContentHome: View {
                                     
                                 }
                                 .padding(.top, 22)
-                                .padding(.bottom, 16)
+                                .padding(.bottom, 18)
                                 
                                 if !noResultsMessage.isEmpty {
                                     Text(noResultsMessage)

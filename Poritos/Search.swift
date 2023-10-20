@@ -22,8 +22,7 @@ struct SearchView: View {
                         .foregroundColor(.gray)
                         .padding(.horizontal, 28)
                 }
-                .padding(.top, 12)
-                .padding(.bottom, 16)
+               
                 
                 if !noResultsMessage.isEmpty {
                     Text(noResultsMessage)
@@ -33,6 +32,8 @@ struct SearchView: View {
                         .padding()
                 }
             }
+//            .padding(.top, 22)
+//            .padding(.bottom, 22)
         }
     }
 }
