@@ -19,7 +19,7 @@ struct PoritosApp: App {
 }
 
 class TokenManager: ObservableObject {
-    @Published var token: String = "53b76de6ca1e508efb191525ab64d4ac3fdbf93c"
+    @Published var token: String = "df3b7e7a0394b5b6028a6a54a655dc24f82dce9d"
     @Published var petsArray: [[String: Any]] = []
 }
 let tokenManager = TokenManager()

@@ -389,35 +389,135 @@ struct ContentHome: View {
                 Text("Loja")
             }
             
-            
             NavigationView {
                 NavigationStack {
-                    ZStack {
-                        Color("BGColor")
-                            .ignoresSafeArea()
-                        ScrollView(.vertical, showsIndicators: false) {
-                            VStack {
-                                ZStack {
-                                    Rectangle()
-                                      .foregroundColor(.clear)
-                                      .frame(width: 382, height: 421)
-                                      .background(.white)
-                                      .cornerRadius(21)
-                                      .shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 0)
-                                      .padding(.top, 30)
-                                    HStack{
-                                        ForEach(pets, id: \.name) { pet in
-                                            PetView(pet: pet)
-                                                .padding(10)
+                    VStack {
+                        ZStack {
+                            Color("BGColor")
+                                .ignoresSafeArea()
+                            ScrollView(.vertical, showsIndicators: false) {
+                                VStack {
+                                    ZStack {
+                                        
+                                        Rectangle()
+                                            .foregroundColor(.clear)
+                                            .frame(width: 382, height: 421)
+                                            .background(.white)
+                                            .cornerRadius(21)
+                                            .shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 0)
+                                            .padding(.top, 30)
+                                        
+                                        ScrollView(.horizontal, showsIndicators: false) {
+                                            HStack(spacing: 10) {
+                                                ForEach(pets, id: \.name) { pet in
+                                                    ProfilePetView(pet: pet)
+                                                        .cornerRadius(10)
+                                                        .padding(.trailing, 16)
+                                                        .padding(.bottom, 16)
+                                                }
+                                            }
                                         }
+                                        .padding(.top, 220)
+                                        .padding(.leading, 16)
+                                        .frame(width: 378, alignment: .leading)
+                                        Text("Meus pets")
+                                            .font(.system(size: 20, weight: .medium))
+                                            .foregroundColor(.black)
+                                            .offset(y: -30)
+                                            .offset(x: -120)
+                                            .padding(.top, 28)
+                                            
+//                                        Spacer()
                                     }
+                                } .padding(.bottom, -10)
+                                
+                                VStack {
+                                    ZStack {
+                                        Rectangle()
+                                            .foregroundColor(.clear)
+                                            .frame(width: 382, height: 300)
+                                            .background(.white)
+                                            .cornerRadius(21)
+                                            .shadow(color: .black.opacity(0.1), radius: 16, x: 0, y: 0)
+                                            .padding(.top, 30)
+                                        
+                                            .onAppear(){
+                                                getUserInfo(contentHome: self)
+                                                
+                                            }
+                                        
+                                        VStack(spacing: 20) { // Espaço vertical entre os botões
+                                            Button(action: {}) {
+                                                HStack {
+                                                    Image(systemName: "gear")
+                                                        .foregroundColor(Color("PrimaryColor"))
+                                                    Text("Configurações")
+                                                    Image(systemName: "chevron.right")
+                                                        .padding(.leading, 180)
+                                                }
+                                                .frame(maxWidth: 382 - 26, alignment: .leading)
+                                            }
+                                            
+                                            Divider().frame(width: 382)
+                                            
+                                            Button(action: {}) {
+                                                HStack {
+                                                    Image(systemName: "bell")
+                                                        .foregroundColor(Color("PrimaryColor"))
+                                                    Text("Notificações")
+                                                    Image(systemName: "chevron.right")
+                                                        .padding(.leading, 196)
+                                                }
+                                                .frame(maxWidth: 382 - 26, alignment: .leading)
+                                            }
+                                            Divider().frame(width: 382)
+                                            
+                                            Button(action: {}) {
+                                                HStack {
+                                                    Image(systemName: "shippingbox")
+                                                        .foregroundColor(Color("PrimaryColor"))
+                                                    Text("Meus Pedidos")
+                                                    Image(systemName: "chevron.right")
+                                                        .padding(.leading, 182)
+                                                }
+                                                .frame(maxWidth: 382 - 26, alignment: .leading)
+                                            }
+                                            Divider().frame(width: 382)
+                                            
+                                            Button(action: {}) {
+                                                HStack {
+                                                    Image(systemName: "creditcard")
+                                                        .foregroundColor(Color("PrimaryColor"))
+                                                    Text("Métodos de Pagamento")
+                                                    Image(systemName: "chevron.right")
+                                                        .padding(.leading, 104)
+                                                }
+                                                .frame(maxWidth: 382 - 26, alignment: .leading)
+                                            }
+                                            Divider().frame(width: 382)
+                                            
+                                            Button(action: {}) {
+                                                HStack {
+                                                    Image(systemName: "rectangle.portrait.and.arrow.forward")
+                                                        .foregroundColor(Color("PrimaryColor"))
+                                                    Text("Sair")
+                                                    Image(systemName: "chevron.right")
+                                                        .padding(.leading, 256)
+                                                }
+                                                .frame(maxWidth: 382 - 26, alignment: .leading)
+                                            }
+                                        }.padding(.top, 28)
+                                    } .padding(.bottom, 28)
                                 }
                             }
                         }
-                        
                     }
+                   
                     Spacer().frame(height: 0)
                         .navigationBarTitle("Perfil")
+                        .navigationBarItems(
+                            trailing: Button(action: {}) {
+                                Image(systemName: "bell.badge").foregroundColor(Color("PrimaryColor"))})
                         .edgesIgnoringSafeArea(.bottom)
                         .background(ignoresSafeAreaEdges: .all)
                 }
@@ -609,6 +709,62 @@ struct PetView: View {
     }
 }
 
+struct ProfilePetView: View {
+    let pet: Pet
+    
+    var body: some View {
+        VStack {
+            Spacer().frame(width: 0, height: 10)
+            
+            ZStack {
+                Image(pet.imageName)
+                    .resizable()
+                    .frame(width: 180, height: 200)  // Defina o tamanho retangular desejado
+                    .cornerRadius(21)
+                
+                
+                
+                ZStack {
+                    Rectangle()
+                        .foregroundColor(.white)
+                        .opacity(0.5)
+                        .cornerRadius(21)
+                        .frame(width: 168, height: 66)
+                    HStack {
+                        Text(pet.name)
+                            .foregroundColor(.black)
+                            .fontWeight(.semibold)
+                            .font(.system(size: 20))
+                            .padding(.top, 1)
+                            .frame(maxWidth: 190, alignment: .center)
+                        
+                        if pet.sex == .macho {
+                            Image("genderMale")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .aspectRatio(contentMode: .fit)
+                                .padding(.trailing, 8)
+                            
+                            Spacer().frame(width: 20)
+                            
+                        } else {
+                            Image("genderFemale")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .aspectRatio(contentMode: .fit)
+                                .padding(.trailing, 8)
+                            
+                            Spacer().frame(width: 20)
+                        }
+                    }
+                } .padding(.top, 120)
+                
+                Spacer().frame(width: 0, height: 10)
+            }
+        }
+    }
+}
+
  func getFuncAnimal(contentHome: ContentHome) {
     
     let url = URL(string: "http://127.0.0.1:8000/api/animais/listar_animais_usuario/")!
@@ -659,12 +815,39 @@ struct PetView: View {
         }
         contentHome.pets = updatedPets
         
-//        print(contentHome.pets)
         
     }
     
     task.resume()
 }
+
+
+func getUserInfo(contentHome: ContentHome) {
+    let url = URL(string: "http://127.0.0.1:8000/api/usuarios/obter_info_por_token/")!
+    var request = URLRequest(url: url)
+    
+    request.setValue("Token \(tokenManager.token)", forHTTPHeaderField: "Authorization")
+    request.httpMethod = "GET"
+    
+    
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        guard let data = data, error == nil else {
+            print("Erro: \(error?.localizedDescription ?? "Erro desconhecido")")
+            return
+        }
+        
+        do {
+            let userInfo = try JSONDecoder().decode(User.self, from: data)
+            
+        } catch {
+            print("Erro ao decodificar JSON: \(error)")
+            
+        }
+        
+    }
+    task.resume()
+}
+
 
 func getProducts(contentHome: ContentHome) {
     guard let url = URL(string: "http://127.0.0.1:8000/api/produtos/") else {
@@ -735,6 +918,16 @@ struct Produto: Codable {
     let disponivel: Bool
     let data_criacao: String
     let imagem: String
+}
+
+struct User: Codable {
+    let id: Int
+    let tipo_usuario: String
+    let nome: String
+    let data_nascimento: String
+    let cpf: String
+    let celular: String
+    let usuario: String
 }
 
 struct PetServiceView: View {
