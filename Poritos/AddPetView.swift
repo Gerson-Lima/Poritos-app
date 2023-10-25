@@ -189,7 +189,7 @@ struct AddPetView: View {
                             
                             .alert(isPresented: $showAlert) {
                                 Alert(
-                                    title: Text("Goza, Bolsonaro"),
+                                    title: Text("Sucesso!"),
                                     message: Text("Animal adicionado!"),
                                     dismissButton: .default(Text("OK")) {
                                         presentationMode.wrappedValue.dismiss()
